@@ -49,13 +49,31 @@ class TestPostMonkey(unittest.TestCase):
         deserialized = json.loads(serialized)
         self.assertEqual(deserialized['default1'], 'overriden')
 
-    def test_deserialize_valid_response(self):
+    def test_deserialize_valid_string_response(self):
         import json
         sample = 'valid json'
         response = json.dumps(sample)
         inst = self._makeOne()
         deserialized = inst._deserialize_response(response)
         self.assertEqual(deserialized, sample)
+
+    def test_deserialize_valid_boolean_response(self):
+        response = 'true'
+        inst = self._makeOne()
+        deserialized = inst._deserialize_response(response)
+        self.assertEqual(deserialized, True)
+
+    def test_deserialize_valid_integer_response(self):
+        response = '4'
+        inst = self._makeOne()
+        deserialized = inst._deserialize_response(response)
+        self.assertEqual(deserialized, 4)
+
+    def test_deserialize_valid_list_response(self):
+        response = '[1,2,3,4]'
+        inst = self._makeOne()
+        deserialized = inst._deserialize_response(response)
+        self.assertEqual(deserialized, [1,2,3,4])
 
     def test_deserialize_invalid_response(self):
         from .exceptions import DeserializationError

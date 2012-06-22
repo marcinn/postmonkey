@@ -1,6 +1,7 @@
 import json
 import requests
 from functools import partial
+import operator
 
 from . exceptions import (
     SerializationError,
@@ -132,7 +133,8 @@ class PostMonkey(object):
         try/except clause and work with a single exception type for any
         error returned by MailChimp.
         """
-        if 'code' in response and 'error' in response:
+        if operator.isMappingType(response) and 'code' in response\
+                                            and 'error' in response:
             raise MailChimpException(response['code'], response['error'])
 
 def postmonkey_from_settings(settings):
